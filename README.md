@@ -1,17 +1,16 @@
 # scratchpad
 
-A simple, minimalist drawing scratchpad application built with Python and PyQt6. This project was generated using the Gemini CLI.
+A simple drawing scratchpad application built with Python and PyQt6. Made entirely using Gemini CLI.
 
 ## Features
 
-*   **Smooth Drawing**: Uses vector paths for high-quality, anti-aliased lines.
-*   **Minimalist UI**: distraction-free interface with a single "Clear All" button.
+*   **Simple UI**: distraction-free interface with a single "Clear All" button.
 *   **Customizable**: Easily change the `LINE_COLOR` and `BACKGROUND_COLOR` constants in `scratchpad.py` to suit your preference.
 
 ## Controls
 
 *   **Draw**: Click and drag with the left mouse button.
-*   **Clear**: Click the **Clear All** button, or press `C` or `Ctrl+Delete`.
+*   **Clear**: Click the **Clear All** button, or press `C` or `Delete`.
 
 ## Installation & Usage
 
@@ -26,4 +25,4 @@ A simple, minimalist drawing scratchpad application built with Python and PyQt6.
     ```
 
 ---
-*(ai slop)*
+*(this application is pure ai slop with no intervention of mine in the code whatsoever. gemini even wrote most of this readme)*
