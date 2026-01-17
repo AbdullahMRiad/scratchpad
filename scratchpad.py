@@ -28,7 +28,7 @@ class DrawingApp:
 
     def draw(self, event):
         if self.last_x is not None and self.last_y is not None:
-            self.canvas.create_line(self.last_x, self.last_y, event.x, event.y, width=2, fill="black", capstyle=tk.ROUND, smooth=True)
+            self.canvas.create_line(self.last_x, self.last_y, event.x, event.y, width=3, fill="black", capstyle=tk.ROUND, joinstyle=tk.ROUND, smooth=True)
             self.last_x = event.x
             self.last_y = event.y
 
