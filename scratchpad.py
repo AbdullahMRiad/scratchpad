@@ -1,14 +1,18 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QFrame
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtGui import QPainter, QPen, QPainterPath, QFont
-from PyQt6.QtCore import Qt, QPoint, QSize
+from PyQt6.QtCore import Qt, QSize
 
 class DrawingWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.paths = []
         self.current_path = None
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        # We don't need translucent background anymore since we want to fill the screen
+        self.setAutoFillBackground(True)
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.GlobalColor.white)
+        self.setPalette(p)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -30,11 +34,7 @@ class DrawingWidget(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Fill background with white
-        painter.setBrush(Qt.GlobalColor.white)
-        painter.setPen(Qt.PenStyle.NoPen)
-        painter.drawRect(self.rect())
-
+        # Draw paths
         pen = QPen(Qt.GlobalColor.black, 3, Qt.PenStyle.SolidLine)
         pen.setCapStyle(Qt.PenCapStyle.RoundCap)
         pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
@@ -52,30 +52,15 @@ class ScratchpadApp(QMainWindow):
         super().__init__()
         self.setWindowTitle("Scratchpad")
         self.resize(900, 700)
-        self.setStyleSheet("QMainWindow { background-color: #f3f3f3; }")
-
-        # Main layout container
-        main_widget = QWidget()
-        self.setCentralWidget(main_widget)
-        layout = QVBoxLayout(main_widget)
-        layout.setContentsMargins(20, 20, 20, 20)
-        layout.setSpacing(15)
-
-        # Rounded container for the drawing area
-        self.canvas_container = QFrame()
-        self.canvas_container.setStyleSheet("""
-            QFrame {
-                background-color: white;
-                border-radius: 25px;
-                border: 1px solid #dcdcdc;
-            }
-        """)
-        container_layout = QVBoxLayout(self.canvas_container)
-        container_layout.setContentsMargins(5, 5, 5, 5)
-
+        
+        # Drawing area is now the central widget, taking up everything
         self.drawing_widget = DrawingWidget()
-        container_layout.addWidget(self.drawing_widget)
-        layout.addWidget(self.canvas_container)
+        self.setCentralWidget(self.drawing_widget)
+
+        # Use a layout on the DrawingWidget to position the button overlay
+        overlay_layout = QVBoxLayout(self.drawing_widget)
+        overlay_layout.setContentsMargins(0, 0, 0, 30) # 30px padding from bottom
+        overlay_layout.addStretch() # Push button to bottom
 
         # Big Red Clear Button with Glyph
         self.clear_button = QPushButton("\ue107") #  glyph
@@ -101,8 +86,8 @@ class ScratchpadApp(QMainWindow):
         """)
         self.clear_button.clicked.connect(self.drawing_widget.clear_canvas)
         
-        # Center the button horizontally
-        layout.addWidget(self.clear_button, alignment=Qt.AlignmentFlag.AlignCenter)
+        # Add button to the overlay layout
+        overlay_layout.addWidget(self.clear_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
