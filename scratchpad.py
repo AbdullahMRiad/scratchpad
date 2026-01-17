@@ -1,17 +1,20 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton
-from PyQt6.QtGui import QPainter, QPen, QPainterPath, QFont
+from PyQt6.QtGui import QPainter, QPen, QPainterPath, QFont, QColor
 from PyQt6.QtCore import Qt, QSize
+
+# Configuration Constants
+BACKGROUND_COLOR = "#FFFFFF"
+LINE_COLOR = "#000000"
 
 class DrawingWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.paths = []
         self.current_path = None
-        # We don't need translucent background anymore since we want to fill the screen
         self.setAutoFillBackground(True)
         p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.GlobalColor.white)
+        p.setColor(self.backgroundRole(), QColor(BACKGROUND_COLOR))
         self.setPalette(p)
 
     def mousePressEvent(self, event):
@@ -35,7 +38,7 @@ class DrawingWidget(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
         # Draw paths
-        pen = QPen(Qt.GlobalColor.black, 3, Qt.PenStyle.SolidLine)
+        pen = QPen(QColor(LINE_COLOR), 3, Qt.PenStyle.SolidLine)
         pen.setCapStyle(Qt.PenCapStyle.RoundCap)
         pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
         painter.setPen(pen)
