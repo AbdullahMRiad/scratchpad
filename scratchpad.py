@@ -4,8 +4,8 @@ from PyQt6.QtGui import QPainter, QPen, QPainterPath, QFont, QColor
 from PyQt6.QtCore import Qt, QSize
 
 # Configuration Constants
-BACKGROUND_COLOR = "#FFFFFF"
-LINE_COLOR = "#000000"
+BACKGROUND_COLOR = "#000000"
+LINE_COLOR = "#8CEDE7"
 
 class DrawingWidget(QWidget):
     def __init__(self):
@@ -91,6 +91,11 @@ class ScratchpadApp(QMainWindow):
         
         # Add button to the overlay layout
         overlay_layout.addWidget(self.clear_button, alignment=Qt.AlignmentFlag.AlignCenter)
+
+    def keyPressEvent(self, event):
+        if (event.key() == Qt.Key.Key_C) or \
+           (event.key() == Qt.Key.Key_Delete and event.modifiers() & Qt.KeyboardModifier.ControlModifier):
+            self.drawing_widget.clear_canvas()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
